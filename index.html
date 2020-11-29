@@ -1,1 +1,98 @@
-...
+<!doctype html>
+<html>
+
+<head>
+<title>Did They Vote In ___?</title>
+<script type="text/javascript" src="bloomfilter.js"></script>
+<script type="text/javascript">
+
+let k = 16
+let blooms = {}
+
+async function loadState(state) {
+  let response = await fetch('https://stunnashades.github.io/' + state + '-buckets')
+  let buffer = await response.arrayBuffer()
+  let array = new Int32Array(buffer)
+  let bloom = new BloomFilter(array, k);
+  return bloom
+}
+
+async function votedIn(line, state) {
+  if (!blooms[state]) {
+    blooms[state] = await loadState(state)
+  }
+  return blooms[state].test(line)
+}
+
+async function lookup() {
+  let lines = document.getElementById('in').value.split('\n')
+  let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
+
+  let out = ""
+  for (state of states) {
+    for (line of lines) { 
+      if (await votedIn(line, state)) { 
+        out += state + "," + line + "\n"
+      }
+    }
+  }
+  document.getElementById('out').value = out  
+}
+
+</script>
+<style type="text/css">
+
+body {
+  width: 600px;
+  margin: auto;
+  font: 90% helvetica;
+}
+
+textarea { 
+  font-family: 90% courier;
+  display: block;
+  width: 100%;
+  min-height: 300px;
+  margin: 8px 0px 8px 0px;
+}
+
+form { 
+  display: block;
+  margin: 30px 0px 30px 0px;
+}
+
+h { 
+  font: 42px bold georgia;
+}
+
+em { 
+  font-weight: bold;
+}
+
+button {
+  margin-left: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h>Did They Vote In ___?</h>
+
+<form onsubmit="lookup(); return false">
+Enter a list of voters to lookup, one per line.
+<textarea id="in">MATTHEW,PERKINS,07/17/1979</textarea>
+States: 
+<label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
+<label><input type="checkbox" name="states" class="states" value="NV" />NV</label>
+<button>Lookup</button>
+</form>
+
+They (probably) voted in these states, for the 2020 General Election.
+<textarea id="out"></textarea>
+<p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
+<p><em>What about privacy?</em> This lookup is performed in a data structure which obscures its members. That is, you can't see a list of everyone who voted.</p> 
+
+</body>
+</html>
