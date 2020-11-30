@@ -4,7 +4,7 @@
 <head>
 <title>Did They Vote In ___?</title>
 <script type="module">
-import {BloomFilter} from "./bloomfilter"
+import {BloomFilter} from "./bloomfilter.js"
 import {voter, toBloomKey, k} from './common.mjs'
 
 let blooms = {}
@@ -96,6 +96,7 @@ JOSEPH,BIDEN,05/20/1942
 ANDREW,CUOMO,12/06/1957
 PHIL,MURPHY,08/16/1957
 GRETCHEN,WHITMER,08/23/1971
+THOMAS,WOLF,11/17/1948
 HARRY,REID,12/02/1939
 BRIAN,KEMP,11/02/1963
 RON,DESANTIS,09/14/1978</textarea>
@@ -103,6 +104,7 @@ States:
 <label><input type="checkbox" name="states" class="states" value="GA" />GA</label>
 <label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
 <label><input type="checkbox" name="states" class="states" value="NV" />NV</label>
+<label><input type="checkbox" name="states" class="states" value="PA" />PA</label>
 <button id="lookup">Lookup Voters</button>
 </form>
 
