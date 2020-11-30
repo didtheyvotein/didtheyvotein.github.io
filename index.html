@@ -10,6 +10,7 @@ import {voter, toBloomKey, k} from './common.mjs'
 let blooms = {}
 
 async function loadState(state) {
+  status('Downloading ' + state + '...')
   let response = await fetch('/buckets/' + state)
   let buffer = await response.arrayBuffer()
   let array = new Int32Array(buffer)
@@ -22,12 +23,20 @@ async function votedIn(line, state) {
     blooms[state] = await loadState(state)
   } 
   let key = toBloomKey(voter(line), state)
-  return blooms[state].test(key)
+  return [blooms[state].test(key), key]
+}
+
+function status(s, disabled) { 
+  if (s == '') {
+    s = 'Lookup Voters'
+  }
+  let button = document.getElementById('lookup')
+  button.disabled = disabled
+  button.innerHTML = s 
 }
 
 async function lookup() {
-  let button = document.getElementById('lookup')
-  button.disabled = true
+  status('', true)
 
   let lines = document.getElementById('in').value.split('\n')
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
@@ -36,14 +45,15 @@ async function lookup() {
   for (let state of states) {
     let out = ""
     for (let line of lines) { 
-      if (await votedIn(line, state)) { 
-        out += state + "," + line + "\n"
+      let [match,key] = await votedIn(line, state)
+      if (match) { 
+        out += state + "," + key + "\n"
       }
     }
     document.getElementById('out').value += out
   }
 
-  button.disabled = false
+  status('', false)
 }
 
 window.lookup = lookup
@@ -53,7 +63,7 @@ window.lookup = lookup
 
 body {
   width: 600px;
-  margin: auto;
+  margin: 30px auto;
   font: 90% helvetica;
 }
 
@@ -83,6 +93,23 @@ button {
   margin-left: 20px;
 }
 
+#privacy { 
+  display: inline-block;
+}
+
+.moreinfo {
+  display: none
+}
+
+#privacy.expanded .getmoreinfo {
+  display: none
+}
+
+#privacy.expanded .moreinfo {
+  margin: 6px 0px 6px 0px;
+  display: block !important;
+}
+
 </style>
 </head>
 
@@ -91,7 +118,11 @@ button {
 <h>Did They Vote In ___?</h>
 
 <form onsubmit="window.lookup(); return false">
-Enter a list of voters to lookup, one per line.
+Enter a list of voters to lookup, one per line. 
+<div id="privacy">
+<span class="getmoreinfo">(This remains private - <a href=#" onclick="document.getElementById('privacy').classList.add('expanded'); return false">more info</a>).</span>
+<span class="moreinfo"><em>Privacy</em>: your input is not sent anywhere. The lookup is performed locally, after the voter data is downloaded. The <a href="https://en.wikipedia.org/wiki/Bloom_filter">data structure</a> obscures its members, so you can't see a list of all voters.</span>
+</div>
 <textarea id="in">
 DONALD,TRUMP,05/14/1946
 JOSEPH,BIDEN,05/20/1942
@@ -113,7 +144,7 @@ States:
 They (probably) voted in these states, for the 2020 General Election.
 <textarea id="out"></textarea>
 <p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
-<p><em>What about privacy?</em>Your input remains private, since this page downloads the data and performs the lookup locally. The data structure obscures its members, so you can't see a list of everyone who voted.</p> 
+
 
 </body>
 </html>

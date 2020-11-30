@@ -32,6 +32,6 @@ function toBloomKey(voter, state) {
   return key.join(',')
 }
 
-let k = 32
+let k = 16
 
 export {voter, toBloomKey, k}
