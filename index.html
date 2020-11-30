@@ -4,9 +4,9 @@
 <head>
 <title>Did They Vote In ___?</title>
 <script type="text/javascript" src="bloomfilter.js"></script>
-<script type="text/javascript">
+<script type="module">
+import {voter, toKey, k} from './common.js'
 
-let k = 16
 let blooms = {}
 
 async function loadState(state) {
@@ -20,23 +20,25 @@ async function loadState(state) {
 async function votedIn(line, state) {
   if (!blooms[state]) {
     blooms[state] = await loadState(state)
-  }
-  return blooms[state].test(line)
+  } 
+  let key = toKey(voter(line), state)
+  return blooms[state].test(key)
 }
 
 async function lookup() {
   let lines = document.getElementById('in').value.split('\n')
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
 
-  let out = ""
+  document.getElementById('out').value = ""
   for (state of states) {
+    let out = ""
     for (line of lines) { 
       if (await votedIn(line, state)) { 
         out += state + "," + line + "\n"
       }
     }
+    document.getElementById('out').value += out
   }
-  document.getElementById('out').value = out  
 }
 
 </script>
@@ -49,7 +51,8 @@ body {
 }
 
 textarea { 
-  font-family: 90% courier;
+  font-family: courier;
+  font-size: 110%;
   display: block;
   width: 100%;
   min-height: 300px;
@@ -82,8 +85,17 @@ button {
 
 <form onsubmit="lookup(); return false">
 Enter a list of voters to lookup, one per line.
-<textarea id="in">MATTHEW,PERKINS,07/17/1979</textarea>
+<textarea id="in">
+DONALD,TRUMP,05/14/1946
+JOSEPH,BIDEN,05/20/1942
+ANDREW,CUOMO,12/06/1957
+PHIL,MURPHY,08/16/1957
+GRETCHEN,WHITMER,08/23/1971
+HARRY,REID,12/02/1939
+BRIAN,KEMP,11/02/1963
+RON,DESANTIS,09/14/1978</textarea>
 States: 
+<label><input type="checkbox" name="states" class="states" value="GA" />GA</label>
 <label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
 <label><input type="checkbox" name="states" class="states" value="NV" />NV</label>
 <button>Lookup</button>
@@ -92,7 +104,7 @@ States:
 They (probably) voted in these states, for the 2020 General Election.
 <textarea id="out"></textarea>
 <p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
-<p><em>What about privacy?</em> This lookup is performed in a data structure which obscures its members. That is, you can't see a list of everyone who voted.</p> 
+<p><em>What about privacy?</em>Your input remains private, since this page downloads the data and performs the lookup locally. The data structure obscures its members, so you can't see a list of everyone who voted.</p> 
 
 </body>
 </html>
