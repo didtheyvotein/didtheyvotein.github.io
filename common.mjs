@@ -1,5 +1,5 @@
 function normalize(s) {
-  return s.replace(/ [&\/\\#,+()$~%.'":*?<>{}]/g,'')
+  return s.replace(/ [&\/\\#,+()$~%.'":*?<>{}]/g,'').toUpperCase()
 }
 
 let lookupColumns = {
@@ -15,8 +15,9 @@ function voter(line) {
   v['firstName'] = normalize(s[0])
   v['lastName'] = normalize(s[1])
   if (s[2].indexOf('/') != -1) {
-    v['birthDate'] = s[2]
-    v['birthYear'] = s[2].split('/')[2]    
+    let bd = s.split('/')
+    v['birthDate'] = bd.map(c => parseInt(c).toString()).join('/')
+    v['birthYear'] = bd[2]    
   } else {
     v['birthYear'] = s[2]
   }

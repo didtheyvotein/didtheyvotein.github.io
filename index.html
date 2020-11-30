@@ -42,17 +42,25 @@ async function lookup() {
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
 
   document.getElementById('out').value = ""
+  let bad = 0
   for (let state of states) {
     let out = ""
     for (let line of lines) { 
-      let [match,key] = await votedIn(line, state)
-      if (match) { 
-        out += state + "," + key + "\n"
-      }
+	  try {
+        let [match,key] = await votedIn(line, state)
+        if (match) { 
+          out += state + "," + key + "\n"
+        }
+	  } catch (error) {
+	    bad += 1
+	  }
     }
     document.getElementById('out').value += out
   }
 
+  if (bad > 0) { 
+    window.alert(`Skipped ${bad} bad lines`)
+  }
   status('', false)
 }
 
@@ -124,15 +132,20 @@ Enter a list of voters to lookup, one per line.
 <span class="moreinfo"><em>Privacy</em>: your input is not sent anywhere. The lookup is performed locally, after the voter data is downloaded. The <a href="https://en.wikipedia.org/wiki/Bloom_filter">data structure</a> obscures its members, so you can't see a list of all voters.</span>
 </div>
 <textarea id="in">
-DONALD,TRUMP,05/14/1946
-JOSEPH,BIDEN,05/20/1942
-ANDREW,CUOMO,12/06/1957
-PHIL,MURPHY,08/16/1957
-GRETCHEN,WHITMER,08/23/1971
-THOMAS,WOLF,11/17/1948
-HARRY,REID,12/02/1939
-BRIAN,KEMP,11/02/1963
-RON,DESANTIS,09/14/1978</textarea>
+Donald,Trump,05/14/1946
+Joseph,Biden,05/20/1942
+Andrew,Cuomo,12/06/1957
+Phil,Murphy,08/16/1957
+Gretchen,Whitmer,08/23/1971
+Thomas,Wolf,11/17/1948
+Harry,Reid,12/02/1939
+Brian,Kemp,11/02/1963
+Ron,DeSantis,09/14/1978
+Andre,Agassi,04/29/1970
+Carlos,Santana,07/20/1947
+Floyd,Mayweather,02/24/1977
+Dave,Portnoy,03/22/1977
+Brandon,Knight,12/2/1991</textarea>
 States: 
 <label><input type="checkbox" name="states" class="states" value="GA" />GA*</label>
 <label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
