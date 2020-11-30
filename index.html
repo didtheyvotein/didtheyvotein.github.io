@@ -10,7 +10,7 @@ import {voter, toBloomKey, k} from './common.mjs'
 let blooms = {}
 
 async function loadState(state) {
-  status('Downloading ' + state + '...')
+  status('Downloading ' + state + '...', true)
   let response = await fetch('/buckets/' + state)
   let buffer = await response.arrayBuffer()
   let array = new Int32Array(buffer)
