@@ -10,7 +10,7 @@ import {voter, toBloomKey, k} from './common.mjs'
 let blooms = {}
 
 async function loadState(state) {
-  let response = await fetch('https://stunnashades.github.io/' + state + '-buckets')
+  let response = await fetch('/buckets/' + state)
   let buffer = await response.arrayBuffer()
   let array = new Int32Array(buffer)
   let bloom = new BloomFilter(array, k);
