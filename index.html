@@ -3,8 +3,8 @@
 
 <head>
 <title>Did They Vote In ___?</title>
+<script type="text/javascript" src="bloomfilter.js"></script>
 <script type="module">
-import {BloomFilter} from "./bloomfilter.js"
 import {voter, toBloomKey, k} from './common.mjs'
 
 let blooms = {}
