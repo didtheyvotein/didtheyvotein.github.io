@@ -5,7 +5,7 @@
 <title>Did They Vote In ___?</title>
 <script type="text/javascript" src="bloomfilter.js"></script>
 <script type="module">
-import {voter, toKey, k} from './common.js'
+import {voter, toKey, k} from './common.mjs'
 
 let blooms = {}
 
@@ -26,6 +26,9 @@ async function votedIn(line, state) {
 }
 
 async function lookup() {
+  let button = document.getElementById('lookup')
+  button.disabled = true
+
   let lines = document.getElementById('in').value.split('\n')
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
 
@@ -39,6 +42,8 @@ async function lookup() {
     }
     document.getElementById('out').value += out
   }
+
+  button.disabled = false
 }
 
 </script>
@@ -98,7 +103,7 @@ States:
 <label><input type="checkbox" name="states" class="states" value="GA" />GA</label>
 <label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
 <label><input type="checkbox" name="states" class="states" value="NV" />NV</label>
-<button>Lookup</button>
+<button id="lookup">Lookup Voters</button>
 </form>
 
 They (probably) voted in these states, for the 2020 General Election.
