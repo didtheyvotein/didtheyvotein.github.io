@@ -21,7 +21,7 @@ async function votedIn(line, state) {
   if (!blooms[state]) {
     blooms[state] = await loadState(state)
   } 
-  let key = toKey(voter(line), state)
+  let key = toBloomKey(voter(line), state)
   return blooms[state].test(key)
 }
 
