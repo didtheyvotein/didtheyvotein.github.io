@@ -33,9 +33,9 @@ async function lookup() {
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
 
   document.getElementById('out').value = ""
-  for (state of states) {
+  for (let state of states) {
     let out = ""
-    for (line of lines) { 
+    for (let line of lines) { 
       if (await votedIn(line, state)) { 
         out += state + "," + line + "\n"
       }
@@ -90,7 +90,7 @@ button {
 
 <h>Did They Vote In ___?</h>
 
-<form onsubmit="lookup(); return false">
+<form onsubmit="window.lookup(); return false">
 Enter a list of voters to lookup, one per line.
 <textarea id="in">
 DONALD,TRUMP,05/14/1946
