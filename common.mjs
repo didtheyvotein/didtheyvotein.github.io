@@ -42,6 +42,12 @@ function toBloomKey(voter, state) {
   return key.join(',')
 }
 
-let k = 16
+function numHashes(state) {
+  if (state == 'FL') {
+    return 10
+  } else {
+    return 16
+  }
+}
 
-export {voter, toBloomKey, k}
+export {voter, toBloomKey, numHashes}

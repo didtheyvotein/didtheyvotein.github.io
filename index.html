@@ -5,7 +5,7 @@
 <title>Did They Vote In ___?</title>
 <script type="text/javascript" src="bloomfilter.js"></script>
 <script type="module">
-import {voter, toBloomKey, k} from './common.mjs'
+import {voter, toBloomKey, numHashes} from './common.mjs'
 
 let blooms = {}
 
@@ -14,6 +14,7 @@ async function loadState(state) {
   let response = await fetch('/buckets/' + state)
   let buffer = await response.arrayBuffer()
   let array = new Int32Array(buffer)
+  let k = numHashes(state)
   let bloom = new BloomFilter(array, k);
   return bloom
 }
