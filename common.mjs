@@ -3,10 +3,15 @@ function normalize(s) {
 }
 
 let lookupColumns = {
+ 'CO': ['firstName', 'lastName', 'birthYear'],
+ 'FL': ['firstName', 'lastName', 'birthDate'], 
  'GA': ['firstName', 'lastName', 'birthDate'], 
  'MI': ['firstName', 'lastName', 'birthYear'],
+ 'NC': ['firstName', 'lastName', 'birthYear'],
  'NV': ['firstName', 'lastName', 'birthDate'],
+ 'OH': ['firstName', 'lastName', 'birthDate'],
  'PA': ['firstName', 'lastName', 'birthDate'],
+ 'RI': ['firstName', 'lastName', 'zipCode'],
  'WI': ['firstName', 'lastName', 'zipCode']}
 
 function voter(line) { 
@@ -20,6 +25,10 @@ function voter(line) {
     v['birthYear'] = bd[2]    
   } else {
     v['birthYear'] = s[2]
+  }
+  if (s.length > 3) {
+    // have zip 
+	v['zipCode'] = s[3]
   }
   return v
 }
