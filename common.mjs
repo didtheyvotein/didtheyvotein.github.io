@@ -12,6 +12,7 @@ let lookupColumns = {
  'OH': ['firstName', 'lastName', 'birthDate'],
  'PA': ['firstName', 'lastName', 'birthDate'],
  'RI': ['firstName', 'lastName', 'zipCode'],
+ 'WA': ['firstName', 'lastName', 'birthDate'],
  'WI': ['firstName', 'lastName', 'zipCode']}
 
 function voter(line) { 
@@ -19,17 +20,24 @@ function voter(line) {
   let v = {}
   v['firstName'] = normalize(s[0])
   v['lastName'] = normalize(s[1])
-  if (s[2].indexOf('/') != -1) {
-    let bd = s[2].split('/')
-    v['birthDate'] = bd.map(c => parseInt(c).toString()).join('/')
+  if (s[2] && s[2].indexOf('/') != -1) {
+    let bd = s[2].split('/').map(c => parseInt(c))
+	if (bd[0] > 1000) { 
+	  bd.reverse()
+	}
+    v['birthDate'] = bd.map(c => c.toString()).join('/')
     v['birthYear'] = bd[2]    
   } else {
     v['birthYear'] = s[2]
-  }
+  } 
   if (s.length > 3) {
     // have zip 
-	v['zipCode'] = s[3]
-  }
+	let z = s[3]
+	if (z.indexOf('-') != -1) {
+      z = z.split('-')[0]
+    }	  
+	v['zipCode'] = z
+  }  
   return v
 }
 
@@ -37,17 +45,29 @@ function toBloomKey(voter, state) {
   let columns = lookupColumns[state]
   let key = []
   for (let c of columns) { 
+    let v = voter[c]
+	if (!v) {
+	  throw "Missing data for voter"
+	}
     key.push(voter[c])
   }
   return key.join(',')
 }
 
+let customNumHashes = {
+  'CO': 12,
+  'FL': 10,  
+  'MI': 10,
+  'NC': 10,
+  'OH': 10,
+  'PA': 10,
+  'WA': 10,
+  'WI': 8
+}
+
 function numHashes(state) {
-  if (state == 'FL') {
-    return 10
-  } else {
-    return 16
-  }
+  let custom = customNumHashes[state]
+  return custom ? custom : 16
 }
 
 export {voter, toBloomKey, numHashes}
