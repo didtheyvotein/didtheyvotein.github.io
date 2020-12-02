@@ -1,6 +1,6 @@
 body {
   width: 90%;
-  max-width: 600px;
+  max-width: 800px;
   min-width: 350px;
   margin: 30px auto;
   padding: 0;
@@ -26,7 +26,7 @@ textarea {
 }
 
 h { 
-  font-size: max(130%, min(6vw, 220%));
+  font-size: max(130%, min(6vw, 270%));
   font-weight: bold;
   font-family: courier;
 }

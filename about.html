@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<title>Contact Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="dtv.css">
+<style type="text/css">
+
+p { 
+ line-height: 140%;
+}
+
+#back { 
+  margin-top: 20px;
+  display: block;
+  font-size: 120%;
+  text-decoration: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<h>About DTVi</h>
+
+<p>In 2020, the United States does not have a meaningful system for checking if its citizens are voting are multiple states. We discuss how two current programs fail to meaningfully checks for fraud, while avoiding false positives and protecting the privacy of voters. Finally, we describe how both of these objectives can be achieved. 
+
+<h2>Crosscheck</h2>
+<p><a href="https://en.wikipedia.org/wiki/Interstate_Voter_Registration_Crosscheck_Program">The Interstate Voter Registration Crosscheck Program</a> is an opt-in program for states to detect multiple registration and voting. <a href="http://web.mit.edu/supportthevoter/www/files/2013/09/SOS-Kris-Kobach-Interstate-Crosscheck-PCEA-.pdf#:~:text=Part%20I.%20The%20Interstate%20Crosscheck%20%28%E2%80%9CThe%20Kansas%20Project%E2%80%9D%29,in%20the%20new%20state%20is%20requested%20to%20">Its process</a> is straightforward: States centrally submit their voter registration data. Potential duplicates are found by matching on first name, last name, and date-of-birth. States are informed of these matches.
+
+<p>Unfortunately, Crosscheck has severe drawbacks. It poses a major <em>privacy and security</em> risk: states must release vast quantities of personally-identifiable information to the program.
+It <em>high rate of false positives</em> may disenfranchise voters. First name, last name, and date of birth are not uniquely identifying in even a moderately-sized database. 
+Finally, processing these false-positive results is very <em>labor intensive</em> for individual states. 
+
+<p>As a result of these issues, as well as an <a href="https://law.justia.com/cases/federal/district-courts/kansas/ksdce/5:2013cv04095/93805/105/">ACLU lawsuit</a>, Crosscheck was halted in 2019.
+
+<h2>ERIC</h2>
+<p>The <a href="https://ericstates.org/">Electronic Registration Information Center</a> is often described as a de-facto "successor" to Crosscheck. However, it does not attempt to provide the same fraud-finding functionality as Crosscheck. Rather than finding the (relatively few) numbers of multiple registrations, it is aimed at increasing registration through voter engagement. Furthermore, it still centrally collecting personal information from all states, which poses a risk to privacy and security. 
+
+<h2>Did They Vote In ___?</h2>
+
+<p>Our project (DTVi) demonstrates it is possible to meaningfully detect fraud while avoiding the drawbacks of Crosscheck. We achieve this through sensible application of privacy-preserving technology. 
+
+<p><em>Privacy and security: </em> in DTVi, voter data is never centralized, or even transferred outside of a state. 
+Instead, it is compressed into a data structure called a <a href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom filter</a>. This may be thought of as a "black box" which, given a single voter, says if that voter is within the box. However, it is not possible to peer inside the box and see a list of all the voters in the state. 
+Furthermore, each state's Bloom filter is less than 10MB in size, so it can be easily shared.   
+
+<p><em>Low false positives:</em> within each state, we identify potential cases <i>without</i> sharing information. Then, we perform cross-state record matching (using the Bloom filters) only on these potential cases. Since the number of potential cases is much smaller than the entire voter roll, the chance of false positives is greatly diminished. 
+
+<p><em>Reduced labor: </em> preliminary investigations are not plopped back on states' desks. Our team consists of private investigators who have experience in tracking fraud. Their investigations culminate in actual identifications of invalid registration or voting, rather than circumstantial evidence.  
+
+<a id="back" href="index.html">&larr; Back</a>
+
+</body>
+</html>
