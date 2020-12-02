@@ -136,6 +136,7 @@ body.dates .date {
 .footnote {
   display: inline-block;
   margin-right: 10px; 
+  white-space: no-wrap;
 }
 
 sup {
@@ -170,7 +171,7 @@ Enter voters to look up.
 </div>
 <textarea id="in">
 Donald,Trump,06/14/1946
-Joseph,Biden,05/20/1942
+Andrew,Cuomo,12/06/1957
 Gretchen,Whitmer,08/23/1971
 Thomas,Wolf,11/17/1948
 Harry,Reid,12/02/1939
@@ -184,9 +185,10 @@ Brandon,Knight,12/2/1991</textarea>
 <label><input type="checkbox" name="states" class="states" value="CO" />CO<sup>&dagger;</sup><span class="date">(9/15)</span></label>
 <label><input type="checkbox" name="states" class="states" value="FL" />FL<sup>&dagger;</sup><span class="date">(10/13)</span></label>
 <label><input type="checkbox" name="states" class="states" value="GA" />GA&ast;</label>
-<label><input type="checkbox" name="states" class="states" value="MI" />MI</label>
+<label><input type="checkbox" name="states" class="states" value="MI" />MI<sup>&dagger;</sup><span class="date">(...)</span></label>
 <label><input type="checkbox" name="states" class="states" value="NC" />NC<sup>&dagger;</sup><span class="date">(11/25)</span></label>
 <label><input type="checkbox" name="states" class="states" value="NV" />NV</label>
+<label><input type="checkbox" name="states" class="states" value="NY" />NY<sup>&dagger;</sup><span class="date">(11/16)</span></label>
 <label><input type="checkbox" name="states" class="states" value="OH" />OH</label>
 <label><input type="checkbox" name="states" class="states" value="PA" />PA</label>
 <label><input type="checkbox" name="states" class="states" value="RI" />RI<sup>&dagger;</sup><span class="date">(11/23)</span></label>
@@ -200,10 +202,10 @@ They (probably) participated in these states.
 <textarea id="out"></textarea>
 <p id="msg"></p>
 <p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
-<p><em>Concerned?</em>: if you find anything wrong or strange, you can <a href="contact.html">contact us</a>.</p>
+<p><em>Concerned?</em> If you find anything wrong or strange, you can <a href="contact.html">contact us</a>.</p>
 
-<p class="footnote">&dagger; Includes all <a href="#" onclick="document.body.classList.add('dates'); return false">recent</a> active registrations.
-<p class="footnote">&ast; Incomplete data provided by the state. 
+<p class="footnote">&dagger; Includes all <a href="#" onclick="document.body.classList.add('dates'); return false">recently</a> active registrations, not just voters on 11/3.
+<p class="footnote">&ast; Incomplete or inadequate data provided by the state. 
 
 </body>
 </html>
