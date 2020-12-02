@@ -23,7 +23,8 @@ function voter(line) {
   if (s[2] && s[2].indexOf('/') != -1) {
     let bd = s[2].split('/').map(c => parseInt(c))
 	if (bd[0] > 1000) { 
-	  bd.reverse()
+	  let yr = bd.shift()
+	  bd.push(yr)
 	}
     v['birthDate'] = bd.map(c => c.toString()).join('/')
     v['birthYear'] = bd[2]    

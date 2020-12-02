@@ -3,7 +3,7 @@
 
 <head>
 <title>Did They Vote In ___?</title>
-<meta name="viewport" content="width=device-width, initial-scale=0.9">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript" src="bloomfilter.js"></script>
 <script type="module">
 import {voter, toBloomKey, numHashes} from './common.mjs'
@@ -69,39 +69,14 @@ async function lookup() {
 window.lookup = lookup
 
 </script>
+<link rel="stylesheet" type="text/css" href="dtv.css">
 <style type="text/css">
-
-body {
-  width: 480px;
-  margin: 30px auto;
-  padding: 5px;
-  font: 110% helvetica;
-}
-
-textarea { 
-  font-family: courier;
-  font-size: 110%;
-  line-height: 120%;
-  display: block;
-  width: 100%;
-  min-height: 300px;
-  margin: 8px 0px 8px 0px;
-}
 
 form { 
   display: block;
   margin: 30px 0px 30px 0px;
 }
 
-h { 
-  font-size: 38px;
-  font-weight: bold;
-  font-family: courier;
-}
-
-em { 
-  font-weight: bold;
-}
 
 #privacy { 
   display: inline;
@@ -118,6 +93,7 @@ em {
 #privacy.expanded .moreinfo {
   margin: 6px 0px 6px 0px;
   display: block !important;
+  line-height: 140%;
 }
 
 label {
@@ -132,10 +108,6 @@ label {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
-}
-
-em { 
-  font-style: normal;
 }
 
 .date {
@@ -165,27 +137,14 @@ sup {
   margin: 0;
   padding: 0;
 }
-
+  
 button {
-  display: block;
-  color: white;
   width: 300px;
   height: 50px;
-  align: center;
+  display: block;
   margin: 10px auto;
-  font-weight: bold;
-  border-radius: 7px;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-size: 110%;
-  border-width: 1px;
-  letter-spacing: .05rem;
-  background-color: #33C3F0
 }
 
-a { 
-  color: #178fb5
-}
 
 button:disabled {
   background-color: #ccc !important;
@@ -202,7 +161,7 @@ button:disabled {
 Enter voters to lookup, one per line. 
 <div id="privacy">
 <span class="getmoreinfo">(This remains <a href=#" onclick="document.getElementById('privacy').classList.add('expanded'); return false">private</a>).</span>
-<span class="moreinfo"><em>Privacy</em>: both your input, and the data of all voters, are kept private. Your is not sent anywhere: the lookup is performed locally, after the voter data is downloaded. The <a href="https://en.wikipedia.org/wiki/Bloom_filter">data structure</a> obscures its members, so you can't extract a list of all voters.</span>
+<span class="moreinfo"><em>Privacy</em>: your input, and all the voter data, are both kept private. Your input is not sent anywhere: the lookup is performed locally, after the voter data is downloaded. The <a href="https://en.wikipedia.org/wiki/Bloom_filter">data structure</a> obscures its contents, so you cannot extract a list of all voters.</span>
 </div>
 <textarea id="in">
 Donald,Trump,06/14/1946
@@ -236,6 +195,7 @@ They (probably) participated in these states.
 <textarea id="out"></textarea>
 <p id="msg"></p>
 <p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
+<p><em>Concerned?</em>: if you find anything wrong or strange, you can <a href="#">contact us</a>.</p>
 
 <p class="footnote">&dagger; Includes all <a href="#" onclick="document.body.classList.add('dates'); return false">recent</a> active registrations.
 <p class="footnote">&ast; Incomplete data provided by the state. 
