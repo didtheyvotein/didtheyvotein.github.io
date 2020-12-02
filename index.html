@@ -99,7 +99,7 @@ form {
 label {
   zoom: 120%;
   white-space: nowrap;
-  width: 60px;
+  width: 70px;
   height: 24px;
 }
 
@@ -158,9 +158,9 @@ button:disabled {
 <h>Did They Vote In ___?</h>
 
 <form onsubmit="window.lookup(); return false">
-Enter voters to lookup, one per line. 
+Enter voters to look up. 
 <div id="privacy">
-<span class="getmoreinfo">(This remains <a href=#" onclick="document.getElementById('privacy').classList.add('expanded'); return false">private</a>).</span>
+<span class="getmoreinfo">(This remains <a href=#" onclick="document.getElementById('privacy').classList.add('expanded'); return false">private</a>)</span>
 <span class="moreinfo"><em>Privacy</em>: your input, and all the voter data, are both kept private. Your input is not sent anywhere: the lookup is performed locally, after the voter data is downloaded. The <a href="https://en.wikipedia.org/wiki/Bloom_filter">data structure</a> obscures its contents, so you cannot extract a list of all voters.</span>
 </div>
 <textarea id="in">
@@ -195,7 +195,7 @@ They (probably) participated in these states.
 <textarea id="out"></textarea>
 <p id="msg"></p>
 <p><em>Warning</em>: this may have false positives. Before drawing any conclusions, you must further validate these matches.</p>
-<p><em>Concerned?</em>: if you find anything wrong or strange, you can <a href="#">contact us</a>.</p>
+<p><em>Concerned?</em>: if you find anything wrong or strange, you can <a href="contact.html">contact us</a>.</p>
 
 <p class="footnote">&dagger; Includes all <a href="#" onclick="document.body.classList.add('dates'); return false">recent</a> active registrations.
 <p class="footnote">&ast; Incomplete data provided by the state. 
