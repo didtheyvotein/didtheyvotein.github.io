@@ -80,7 +80,7 @@ async function lookup() {
   }	
 
   if (bad > 0) { 
-    document.getElementById('msg').innerHTML = `Skipped ${bad} lines which were missing required data`
+    document.getElementById('msg').innerHTML = `Skipped ${bad} lookups which were missing required data`
   }
   status('', false)
 }
@@ -197,8 +197,14 @@ button:disabled {
 
 .settings #settings { 
   margin-top: 10px;
-  display: block;
+  display: flex;
+  justify-content: center;
 }
+
+#settings input { 
+  margin-left: 10px;
+}
+
 
 .settings #settingsToggle { 
   display: none;
@@ -245,7 +251,7 @@ Brandon,Knight,12/2/1991</textarea>
 </div>
 <div id="actions">
 <button id="lookup">Lookup Voters</button>
-<a id="settingsToggle" href="#" onclick="document.body.classList.add('settings'); return false">Advanced</a>
+<a id="settingsToggle" href="#" onclick="document.body.classList.add('settings'); return false">Options</a>
 </div>
 <div id="settings">
 Output Mode: 
