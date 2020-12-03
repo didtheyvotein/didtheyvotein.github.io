@@ -58,7 +58,7 @@ function toBloomKey(voter, state) {
 
 let customNumHashes = {
   'CO': 12,
-  'FL': 10,  
+  'FL': 8,  
   'MI': 10,
   'NC': 10,
   'NY': 7,
