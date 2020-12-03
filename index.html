@@ -42,23 +42,42 @@ async function lookup() {
 
   let lines = document.getElementById('in').value.split('\n')
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
+  let filterMode = document.getElementsById('mode_filter').checked 
 
   document.getElementById('out').value = ""
   let bad = 0
-  for (let state of states) {
-    let out = ""
-    for (let line of lines) { 
-	  try {
-        let [match,key] = await votedIn(line, state)
-        if (match) { 
-          out += state + "," + key + "\n"
-        }
-	  } catch (error) {
-	    bad += 1
-	  }
+  if (filterMode) { 
+    for (let state of states) {
+      let out = ""
+      for (let line of lines) { 
+	    try {
+          let [match,key] = await votedIn(line, state)
+          if (match) { 
+            out += state + "," + key + "\n"
+          }
+	    } catch (error) {
+	      bad += 1
+	    }
+      }
+      document.getElementById('out').value += out
+	}
+  } else { 
+    for (let line of lines) {
+      let matched = []
+	  for (let state of states ) {	
+	    try {
+          let [match,key] = await votedIn(line, state)
+          if (match) { 
+            matched.push(state)
+          }
+	    } catch (error) {
+	      bad += 1
+	    }
+      }
+	  out = matched.join(" ") + "\n"
+      document.getElementById('out').value += out
     }
-    document.getElementById('out').value += out
-  }
+  }	
 
   if (bad > 0) { 
     document.getElementById('msg').innerHTML = `Skipped ${bad} lines which were missing required data`
@@ -100,7 +119,7 @@ h a {
   line-height: 140%;
 }
 
-label {
+#states label {
   zoom: 120%;
   white-space: nowrap;
   width: 70px;
@@ -147,16 +166,42 @@ sup {
   padding: 0;
 }
   
+#actions { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
 button {
   width: 300px;
   height: 50px;
   display: block;
-  margin: 10px auto;
 }
-
 
 button:disabled {
   background-color: #ccc !important;
+}
+
+#settingsToggle { 
+  margin-left: 10px;
+  /*text-decoration: none;
+  font-size: 230%;
+  font-weight: bold;
+  color: gray;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji"*/
+}
+
+#settings { 
+  display: none;
+}
+
+.settings #settings { 
+  margin-top: 10px;
+  display: block;
+}
+
+.settings #settingsToggle { 
+  display: none;
 }
 
 </style>
@@ -198,7 +243,15 @@ Brandon,Knight,12/2/1991</textarea>
 <label><input type="checkbox" name="states" class="states" value="WI" />WA</label>
 <label><input type="checkbox" name="states" class="states" value="WI" />WI</label>
 </div>
+<div id="actions">
 <button id="lookup">Lookup Voters</button>
+<a id="settingsToggle" href="#" onclick="document.body.classList.add('settings'); return false">Advanced</a>
+</div>
+<div id="settings">
+Output Mode: 
+<label><input type="radio" id="mode_filter" name="mode" checked />Filter</label>
+<label><input type="radio" id="mode_mark" name="mode" />Mark</label>
+</div>
 </form>
 
 They (probably) participated in these states.
