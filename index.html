@@ -42,7 +42,7 @@ async function lookup() {
 
   let lines = document.getElementById('in').value.split('\n')
   let states = Array.from(document.getElementsByClassName('states')).filter (c => c.checked).map(c => c.value)
-  let filterMode = document.getElementsById('mode_filter').checked 
+  let filterMode = document.getElementById('mode_filter').checked 
 
   document.getElementById('out').value = ""
   let bad = 0
